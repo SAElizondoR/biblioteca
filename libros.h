@@ -41,7 +41,7 @@ int libs(struct biblio libros[100],int cantl,struct prestamo prestamos[' '],int 
 					break;
 			case 5: system("cls");
 					gotoxy(20,20);
-					printf("Volviendo al menú principal...");
+					printf("Volviendo al menÃº principal...");
 					break;											
 		}
 		//---------------------------------------
@@ -119,7 +119,7 @@ int add(struct biblio libros[100],int cunt){
 		libros[cunt].editorial[j]= toupper(libros[cunt].editorial[j]);
 	}
 	
-	printf("\n\n\tIntroduzca el país: ");
+	printf("\n\n\tIntroduzca el paÃ­s: ");
 	fflush(stdin);
 	gets(libros[cunt].pais);
 	for(j=0;libros[cunt].pais[j]!='\0';j++){
@@ -132,17 +132,17 @@ int add(struct biblio libros[100],int cunt){
 		fflush(stdin);
 		gets(num);
 		booleano = revisarInt(num);
-		
-		if(booleano ==0)
+		libros[cunt].edi=atoi(num);
+		if(booleano ==0 || libros[cunt].edi<1)
 		{
 			printf("\n\n El numero de edicion que ingreso no es valido!\n");
 			printf("P\tor favor introduzca un valor entero: ");
 		}
 		
-	}while(booleano==0);
-	libros[cunt].edi=atoi(num);
+	}while(booleano==0 || libros[cunt].edi<1);
 	
-	//...............VALIDACIÓN DE CANTIDAD DE LIBROS EN EXISTENCIA.............
+	
+	//...............VALIDACIÃ“N DE CANTIDAD DE LIBROS EN EXISTENCIA.............
 	do{
 		printf("\n\n\tIntroduzca la cantidad de libros en existencia que se agregaran: ");
 		fflush(stdin);
@@ -194,14 +194,14 @@ int add(struct biblio libros[100],int cunt){
 		
 		do{
 		
-			printf("\n\n\tIntroduzca el año de publicacion: ");;
+			printf("\n\n\tIntroduzca el aÃ±o de publicacion: ");;
 			fflush(stdin);
 			gets(num);
-			booleano = revisarInt(num);													//Validacion del año de publicacion 
+			booleano = revisarInt(num);													//Validacion del aÃ±o de publicacion 
 			
 			if(booleano ==0)
 			{
-				printf("\n\nEl año ingresado no es valido!\n");
+				printf("\n\nEl aÃ±o ingresado no es valido!\n");
 				printf("\tPor favor introduzca un valor entero: ");
 			}
 		
@@ -213,7 +213,7 @@ int add(struct biblio libros[100],int cunt){
 		if(booleano==0)
 		{
 			printf("\n\n La fecha ingresada no es valida!\n");
-			printf("Por favor ingrese una fecha de publicación valida: ");
+			printf("Por favor ingrese una fecha de publicaciÃ³n valida: ");
 		}
 	}while(booleano==0);
 	
@@ -224,7 +224,7 @@ int add(struct biblio libros[100],int cunt){
 			printf("\n\n\t Son correctos los datos introducidos? [1.-Si/2.-No]: ");;
 			fflush(stdin);
 			gets(num);
-			booleano = revisarInt(num);													//Validacion del año de publicacion 
+			booleano = revisarInt(num);													//Validacion del aÃ±o de publicacion 
 			
 			if(booleano ==0)
 			{
@@ -264,7 +264,7 @@ int add(struct biblio libros[100],int cunt){
 			if(c==3)
 				break;
 		}
-	// Si quedaron campos vacíos se llenan con 0's
+	// Si quedaron campos vacÃ­os se llenan con 0's
 	if(j==lenaut)
 		for(j=c;j<3;j++)
 			libros[cunt].clave[3+c]='0';
@@ -358,7 +358,7 @@ int rip(struct biblio libros[100],int cunt){	//funcion que elimina el libro dese
 			printf("\n\n Esta seguro que desea eliminar el libro con esta clave? [1.-Si/2.-No]: ");
 			fflush(stdin);
 			gets(num);
-			booleano = revisarInt(num);													//Validacion del año de publicacion 
+			booleano = revisarInt(num);													//Validacion del aÃ±o de publicacion 
 			op=atoi(num);
 			if(booleano ==0 || (op!=1 && op!=2))
 			{
@@ -421,7 +421,7 @@ void search(struct biblio libros[100],int cunt){
 	
 	do{
 		
-		//Formato de menú de busquedas
+		//Formato de menÃº de busquedas
 		system("cls");
 		printf("\n\n\n\t BUSQUEDA DE LIBROS\n\n");
 		printf("\t\tIngrese el tipo de busqueda que desea realizar\n");
@@ -429,7 +429,7 @@ void search(struct biblio libros[100],int cunt){
 		printf("\t\t2.- Busqueda de libros por categoria\n");
 		printf("\t\t3.- Busqueda de libros por identificador\n");
 		printf("\t\t4.- Busqueda de libros por nombre\n");
-		printf("\t\t5.- Regresar al menú de libros\n");
+		printf("\t\t5.- Regresar al menÃº de libros\n");
 		do{
 		
 			do{
@@ -555,14 +555,14 @@ void csearch(struct biblio libros[100],int cunt){ //Busqueda de libro por la cat
 		gotoxy(20,2);
 	
 		printf("\n\n\n\t\tBUSQUEDA DE LIBROS POR CATEGORIA\n\n");
-		printf("Ingrese la categoria del libro a buscar\n\n 000 --- Informática, información y obras generales\n\n ");
-		printf("100 --- Filosofía y psicología\n\n");
-		printf("200 --- Religión\n\n");
+		printf("Ingrese la categoria del libro a buscar\n\n 000 --- InformÃ¡tica, informaciÃ³n y obras generales\n\n ");
+		printf("100 --- FilosofÃ­a y psicologÃ­a\n\n");
+		printf("200 --- ReligiÃ³n\n\n");
 		printf("300 --- Ciencias sociales\n\n");
 		printf("400 --- Lengua\n\n");
 		printf("500 --- Ciencia\n\n");
 		printf("600 --- Tecnologia y ciencia aplicada\n\n");
-		printf("700 --- Arte y recreación\n\n");
+		printf("700 --- Arte y recreaciÃ³n\n\n");
 		printf("800 --- Literatura\n\n");
 		printf("900 --- Historia y geografia\n\n");
 		do{
@@ -755,7 +755,7 @@ void reportes(struct biblio libros[100],int cunt,struct prestamo prestamos[200],
 	*/
 	do{
 	
-		//Formato de menú de reportes de libros
+		//Formato de menÃº de reportes de libros
 		system("cls");
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS\n\n\n\n\n");
@@ -908,7 +908,7 @@ void rtitulo(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenado
 		gotoxy(50,2);
 		
 		printf("REPORTE DE LIBROS POR TITULO\n\n\n\n\n");
-		fprintf(reptit,"REPORTES DE LIBROS POR TITULO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(reptit,"REPORTES DE LIBROS POR TITULO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		
 		//Ordenamiento por titulo
 		
@@ -972,7 +972,7 @@ void rautor(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados
 		
 		gotoxy(50,2);
 		printf("REPORTES DE LIBROS POR AUTOR\n\n\n\n\n");
-		fprintf(repau,"REPORTES DE LIBROS POR AUTOR\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repau,"REPORTES DE LIBROS POR AUTOR\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		
 		//Ordenamiento por autor
 		
@@ -1012,7 +1012,7 @@ void rautor(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados
 		
 }
 
-void rpais(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados por el país de origen del libro
+void rpais(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados por el paÃ­s de origen del libro
 		char temp[' '];
 		int ban,l;
 		struct biblio aux;
@@ -1034,7 +1034,7 @@ void rpais(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados 
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR PAIS\n\n\n\n\n");
-		fprintf(repai,"REPORTES DE LIBROS POR PAIS\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repai,"REPORTES DE LIBROS POR PAIS\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		
 		//Ordenamiento por autor
 		
@@ -1095,7 +1095,7 @@ void reditorial(struct biblio libros[100],int cunt){ 		//Reporte de libros orden
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR EDITORIAL\n\n\n\n\n");
-		fprintf(repedi,"REPORTES DE LIBROS POR EDITORIAL\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repedi,"REPORTES DE LIBROS POR EDITORIAL\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		
 		//Ordenamiento por autor
 		
@@ -1155,7 +1155,7 @@ void rclave(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR CLAVE\n\n\n\n\n");
-		fprintf(repcla,"REPORTES DE LIBROS POR CLAVE\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repcla,"REPORTES DE LIBROS POR CLAVE\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		
 			//Ordenamiento por autor
 		
@@ -1211,7 +1211,7 @@ void rcant(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados 
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR CANTIDAD DE VECES PRESTADO\n\n\n\n\n");
-		fprintf(repcan,"REPORTES DE LIBROS POR CANTIDAD DE VECES PRESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repcan,"REPORTES DE LIBROS POR CANTIDAD DE VECES PRESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		//Ordenamiento por autor
 		
 			for(i=0;i<cunt;i++){
@@ -1247,7 +1247,7 @@ void rcant(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados 
 		
 }
 
-void rano(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados por el año de publicacion
+void rano(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados por el aÃ±o de publicacion
 		char temp[' '];
 		int ban,l;
 		struct biblio aux;
@@ -1267,12 +1267,12 @@ void rano(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados p
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR ANO\n\n\n\n\n");
-		fprintf(repano,"REPORTES DE LIBROS POR ANO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO");
+		fprintf(repano,"REPORTES DE LIBROS POR ANO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO");
 		//Ordenamiento por autor
 		
 			for(i=0;i<cunt;i++){
 			
-		      for(j=i+1;j<cunt;j++){ //Ordenamiento por año, mes, dia
+		      for(j=i+1;j<cunt;j++){ //Ordenamiento por aÃ±o, mes, dia
 		      	
 		         if((libros[i].ano>libros[j].ano) ){
 		            aux=libros[i];
@@ -1338,7 +1338,7 @@ void redo(struct biblio libros[100],int cunt,struct prestamo prestamos[' '],int 
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR ESTADO\n\n\n\n\n");
-		fprintf(repedo,"REPORTES DE LIBROS POR ESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÑO\tV_PRESTADO\tESTADO");
+		fprintf(repedo,"REPORTES DE LIBROS POR ESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tTOTAL_LIB\tDIA\tMES\tAÃ‘O\tV_PRESTADO\tESTADO");
 		//Ordenamiento por autor
 		
 			for(i=0;i<cunt;i++){
@@ -1480,14 +1480,14 @@ void impresionlibros(struct biblio libros[100],int cantlibros)
 		fprintf(ap,"%s\n",libros[i].clave); 		//Clave del libro
 		fprintf(ap,"%s\n",libros[i].autor); 		//Autor del libro
 		fprintf(ap,"%s\n",libros[i].titulo); 		//Titulo del libro
-		fprintf(ap,"%s\n",libros[i].pais); 		//País de origen del libro
+		fprintf(ap,"%s\n",libros[i].pais); 		//PaÃ­s de origen del libro
 		fprintf(ap,"%s\n",libros[i].editorial); 	//Editorial del libro
 		fprintf(ap,"%d\n",libros[i].cat); 			//Categoria del libro
 		fprintf(ap,"%d\n",libros[i].edi); 			//Numero de de edicion del libro
 		fprintf(ap,"%d\n",libros[i].exi); 			//Cantidad de libros en existencia del libro
 		fprintf(ap,"%d\n",libros[i].dia); 			//Dia de publicacion del libro
 		fprintf(ap,"%d\n",libros[i].mes); 			//Mes de publicacion del libro
-		fprintf(ap,"%d\n",libros[i].ano); 			//Año de publicacion del libro
+		fprintf(ap,"%d\n",libros[i].ano); 			//AÃ±o de publicacion del libro
 		fprintf(ap,"%d\n",libros[i].vecesprestado);	//Veces prestado
 	}
 	fclose(ap);
