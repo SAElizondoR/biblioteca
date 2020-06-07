@@ -53,9 +53,12 @@ int menuusuario(struct usuarios usuarios[100],int cantusuarios); //
 // operaciones de captura de datos
 int agusuario(struct usuarios usuarios[100],int cantusuarios); //
 
+//eliminar usuario
+int eliminarusuario(struct usuarios usuarios[100],int cantusuarios);
+
 // operaciones de lectura de los datos en el archivo
 int lecturausuarios(struct usuarios usuarios[100],int cantusuarios); //
-void impresionusuarios();
+void impresionusuarios(struct usuarios usuarios[100],int cantusuarios);
 
 // operaciones de modificacion de datos
 void modifusuario(struct usuarios usuarios[100],int cantusuarios);
@@ -72,9 +75,10 @@ void conusucantlibros(struct usuarios usuarios[100],int cantusuarios);
 
 // LIBROS
 int libs(struct biblio libros[100],int cantl,struct prestamo prestamos[' '],int cantprestamos);
+void impresionlibros(struct biblio libros[100],int cantlibros);
 
 //eliminar libro
-void rip(struct biblio libros[100],int cunt);
+int rip(struct biblio libros[100],int cunt);
 
 //captura de datos
 int add(struct biblio libros[100],int cunt);
@@ -87,21 +91,19 @@ void encabezado(),tabla(struct biblio libros[100],int l,int i);
 
 // busquedas
 void search(struct biblio libros[100],int cunt),asearch(struct biblio libros[100],int cunt),nsearch(struct biblio libros[100],int cunt),isearch(struct biblio libros[100],int cunt),csearch(struct biblio libros[100],int cunt);
-void intercambioS_A();
-void intercambioA_S();
 
 // Lectura de archivo
 int contarlibros(struct biblio libros[100]);
 
 // PRESTAMOS
-int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas);
+int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas,float valormulta);
 int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' '],struct multa multas[200],int cantmultas);
 
 //	FUNCIONES PARA CARGAR Y GUARDAR DATOS
 void impresionprestamos(struct prestamo prestamos[' '],int cantprestamos);
 //	FUNCIONES DEL MENU PRINCIPAL
 int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' ']);
-void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas);
+void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas,struct usuarios usuarios[100],int cantusuarios);
 //	FUNCIONES DE CONSULTAS
 void conprestamos(struct prestamo prestamos[' '],int cantprestamos);
 void conpresgen(struct prestamo prestamos[' '],int cantprestamos);
@@ -137,6 +139,8 @@ int fechamayor(char *fecha1,char *fecha2);
 void multasporestado(struct multa multas[200],int cantmultas);
 void multaspormonto(struct multa multas[200],int cantmultas);
 
+void impresionmultas(struct multa multas[200],int cantmultas,float valormulta);
+
 // VALIDACIONES
 
 int validar_entero(char *n)//valida entero positivo, regresa un valor booleano
@@ -165,14 +169,14 @@ int validar() //validacion integrada en la funcion
 				if(!isdigit(num[iint]))	
 				{
 					pint=0;
-					printf("\n\n\t Introduzca un numero entero mayor a cero. \n\n");
+					printf("\n\n\t Introduzca un numero entero mayor a cero: ");
 					break;
 				}					
 			}
 			if(yint==0)
 			{
 				pint=0;
-				printf("\n\n\t Introduzca un numero entero mayor a cero. \n\n");							
+				printf("\n\n\t Introduzca un numero entero mayor a cero: ");							
 			}
 		}	while(pint==0);
 		

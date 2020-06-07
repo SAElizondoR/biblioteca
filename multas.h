@@ -21,6 +21,7 @@ float multax(struct multa multas[200],int cantmultas,float valormulta)
 		{
 			case 1:
 				valormulta=editar_multa(valormulta);
+				impresionmultas(multas,cantmultas,valormulta);
 				break;
 			case 2:
 				reportes_multa(multas,cantmultas);
@@ -105,7 +106,7 @@ int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo presta
 					for(j=0;j<cantusuarios;j++)
 						if(strcpy(prestamos[i].mat,usuarios[j].mat)==0)
 						{
-							usuarios[j].estado=1;
+							usuarios[j].estado++;
 							break;
 						}
 				}
@@ -185,6 +186,7 @@ float lecturavalor(struct multa multas[200],int cantmultas)
 		}           
 	}
 	fscanf(mult,"%f\n",&valormulta);
+	fclose(mult);
 	if(valormulta==0)
 		return 10;
 	else

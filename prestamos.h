@@ -1,7 +1,6 @@
-int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas)
+int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas,float valormulta)
 {
 	int i;
-
 	//MENU
 	cantprestamos=menuprestamos(prestamos,cantprestamos,cantlibros,cantusuarios,usuarios,libros,multas,cantmultas);	
 	
@@ -9,7 +8,7 @@ int prests(struct biblio libros[100],struct usuarios usuarios[100],struct presta
 	impresionprestamos(prestamos,cantprestamos);
 	impresionusuarios(usuarios,cantusuarios);
 	impresionlibros(libros,cantlibros);
-
+	impresionmultas(multas,cantmultas,valormulta);
 	return cantprestamos;
 }
 
@@ -63,7 +62,7 @@ int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,i
 		{
 			op=validar();
 			if(op!=1 && op!=2 && op!=3 && op!=4)
-				printf("\n\n Entrada invalida, introduzca un numero entre 1 y 4");
+				printf("\n\n\t Introduzca un numero entre 1 y 4: ");
 		}	while(op!=1 && op!=2 && op!=3 && op!=4);
 		system("cls");
 		//OPCIONES DEL MENU
@@ -71,7 +70,7 @@ int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,i
 		{
 			case 1: cantprestamos=represtamos(prestamos,cantprestamos,cantlib,cantusuarios,usuarios,libros);	 // FUNCION REALIZAR PRESTAMO
 					break;
-			case 2:	entprestamos(prestamos,cantprestamos,multas,cantmultas);	 // FUNCION HACER LA ENTREGA DE UN LIBRO
+			case 2:	entprestamos(prestamos,cantprestamos,multas,cantmultas,usuarios,cantusuarios);	 // FUNCION HACER LA ENTREGA DE UN LIBRO
 					break;
 			case 3:conprestamos(prestamos,cantprestamos);		// SUBMENU CONSULTA
 					break;		
@@ -84,8 +83,7 @@ int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,i
 //_--------------------------------------------------------------------------------------------------
 int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' '])
 {
-
-	int sn,op,op2,i,boton=0,boton2=0,boton3=0,boton4=0;
+	int sn,op,op2,i,boton2=0,boton3=0,boton4=0;
 	char aux[10],numero[' '];
 	printf("\n\n\n\t REALIZAR UN PRESTAMO:");
 	do
@@ -96,19 +94,11 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 			printf("\n\n\t Introduzca el identificador del usuario: ");
 			fflush(stdin);
 			gets(prestamos[cantprestamos].mat);
-			boton=0;
 			boton2=0;
 			boton3=0;
 			boton4=0;			
-			for(i=0;i<strlen(prestamos[cantprestamos].mat);i++)  // CHECAMOS QUE NO HAYA PUESTO TABULADOR NI ESPACIO AL INGRESAR LA MATRICULA
-			{
-				if(prestamos[cantprestamos].mat[i]=='\t' || prestamos[cantprestamos].mat[i]==' ')
-				{
-					boton=1;
-					break;
-				}
+			for(i=0;i<strlen(prestamos[cantprestamos].mat);i++)  // MAYUSCULAS
 				prestamos[cantprestamos].mat[i]=toupper(prestamos[cantprestamos].mat[i]);
-			}
 					
 			for(i=0;i<cantusuarios;i++)
 				if(strcmp(usuarios[i].mat,prestamos[cantprestamos].mat)==0) // CHECAMOS SI LA MATRICULA ESTA EN LOS ARCHIVOS
@@ -120,12 +110,14 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 						boton4=1;
 						printf("\n\n\t ESTE USUARIO TIENE UNA MULTA");
 					}
+					break;
 				}
 			for(i=0;i<cantprestamos;i++)
 				if(strcmp(prestamos[i].mat,prestamos[cantprestamos].mat)==0 && prestamos[i].estado==1) // CHECAMOS SI LA MATRICULA TIENE UN PRESTAMO ACTIVO
 				{
 					boton3=1;
 					printf("\n\n\t ESTE USUARIO TIENE UN PRESTAMO ACTIVO");
+					break;
 				}
 			if(boton2==0)
 				printf("\n\n\t Identificador no encontrado");
@@ -133,47 +125,36 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 			{
 				do
 				{
-					printf("\n Desea proceder? [1) Si - 2) No]\n");
+					printf("\n\n\t Desea proceder? [1) Si - 2) No]\n");
 					sn=validar();
 				}while(sn<1||sn>2);
 				if(sn==2)
 					return cantprestamos;
 			}
-		} while(boton==1 || boton2==0);
+		} while(boton2==0);
 		
 		
 		//SE PREGUNTA LA CLAVE DEL LIBRO
-		do
+		printf("\n\n\t Introduzca la clave del libro: ");
+		char busca[' '];
+		fflush(stdin);
+		gets(busca);
+		boton2=0;
+		boton3=0;
+		for(i=0;i<strlen(busca);i++)  // MAYUSCULAS
+			busca[i]=toupper(busca[i]);
+		strcpy(prestamos[cantprestamos].clave,busca);
+		for(i=0;i<cantlib;i++)
 		{
-			printf("\n\n\t Introduzca la clave del libro: ");
-			char busca[' '];
-			fflush(stdin);
-			gets(busca);
-			strcpy(prestamos[cantprestamos].clave,busca);
-			boton=0;
-			boton2=0;
-			boton3=0;
-			for(i=0;i<strlen(prestamos[cantprestamos].clave);i++)  // CHECAMOS QUE NO HAYA PUESTO TABULADOR NI ESPACIO AL INGRESAR LA CLAVE
+			if(strcmpi(busca,libros[i].clave)==0) // CHECAMOS SI LA CLAVE ESTA EN LOS ARCHIVOS
 			{
-				if(prestamos[cantprestamos].clave[i]=='\t' || prestamos[cantprestamos].clave[i]==' ')
-					boton=1;
-					printf("\n");
-				prestamos[cantprestamos].clave[i]=toupper(prestamos[cantprestamos].clave[i]);
-			}
-			for(i=0;i<cantlib;i++)
-			{
-				if(strcmpi(busca,libros[i].clave)==0) // CHECAMOS SI LA CLAVE ESTA EN LOS ARCHIVOS
-				{
-					boton2=1;
-					printf("\n\n\t Clave encontrada");
-					break;
+				boton2=1;
+				printf("\n\n\t Clave encontrada");
+				break;
+			}	
+		}
 		
-				}	
-				
-			}
-			
-				
-			for(i=0;i<cantprestamos;i++)
+		for(i=0;i<cantprestamos;i++)
 			if(strcmp(prestamos[i].clave,prestamos[cantprestamos].clave)==0 && prestamos[i].estado==1) // CHECAMOS SI EL LIBRO ESTA PRESTADO
 			{
 				boton3=1;
@@ -181,16 +162,21 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 				system("pause");
 				return cantprestamos;
 			}
-			do  //Nos aseguramos de que este correcta la informacion
-			{
-				printf("\n Desea proceder con el prestamo? [1) Si - 2) No]\n");
-				sn=validar();
-			}while(sn<1||sn>2);
-			if(sn==2)
-				return cantprestamos;
-			if(boton==1 || boton2==0)
-				printf("\n\n\t Libro no encontrado.");
-		} while(boton==1 || boton2==0);	
+		do  //Nos aseguramos de que este correcta la informacion
+		{
+			printf("\n Desea proceder con el prestamo? [1) Si - 2) No]\n\t");
+			sn=validar();
+			if(sn<1||sn>2)
+				printf("\n\n Introduzca 1 o 2\n");
+		}while(sn<1||sn>2);
+		if(sn==2)
+			return cantprestamos;
+		if(boton2==0)
+		{
+			printf("\n\n\t Libro no encontrado.\n\n");
+			system("pause");
+			return cantprestamos;
+		}
 		prestamos[cantprestamos].num=cantprestamos+1;//NUMERO DEL PRESTAMO
 		time_t t = time(NULL);
 		struct tm *tm = localtime(&t);
@@ -202,16 +188,19 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 		
 		for(i=0;i<cantusuarios;i++)
 				if(strcmp(usuarios[i].mat,prestamos[cantprestamos].mat)==0) // EDITAMOS INFO. DE LA MATRICULA
-					usuarios[i].cantlibros++;				
+				{
+					usuarios[i].cantlibros++;	
+					break;
+				}	
 		for(i=0;i<cantlib;i++)
 				if(strcmp(libros[i].clave,prestamos[cantprestamos].clave)==0)
-				libros[i].vecesprestado++;
-				
+				{
+					libros[i].vecesprestado++;
+					break;
+				}
 		cantprestamos=cantprestamos+1;
 		 // AUMENTAMOS LA CANTIDAD TOTAL DE PRESTAMOS
 		//SE PREGUNTA SI SE DESEA REALIZAR OTRO PRESTAMO
-		
-		printf("\n\n\t Prestamo realizado con exito");
 		
 		do
 		{
@@ -220,6 +209,9 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 		}	while(op!=1 && op!=2);
 	}	while(op==1);
 	
+	
+	
+	printf("\n\n\t Prestamo realizado con exito! Recuerde que el libro se devuelve en 3 dias.\n\n\n\t");
 	return cantprestamos;
 }
 
@@ -227,11 +219,11 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 
 
 //Esta funcion se usa para regresar los libros
-void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas)
+void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas,struct usuarios usuarios[100],int cantusuarios)
 {
 	char busqueda[' '],numero[' '];
 	int boton=0,nuevo;
-	int sn,i,k;
+	int sn,i,j,k;
 	printf("\n\n\n\t DEVOLUCION DE UN LIBRO:");
 	//SE INGRESA LA CLAVE
 	printf("\n\n\t\t Introduzca la clave del libro que desea devolver:");
@@ -243,7 +235,7 @@ void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa 
 	
 	for(i=0;i<cantprestamos;i++) // CHECAMOS SI HAY UN PRESTAMO CON ESA CLAVE
 	{
-		if(strcmp(prestamos[i].clave,busqueda)==0 && prestamos[i].estado==0)
+		if(strcmp(prestamos[i].clave,busqueda)==0 && prestamos[i].estado==1)
 		{
 			boton=1;
 			k=i;
@@ -253,7 +245,7 @@ void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa 
 		
 	if(boton==0)
 	{
-		printf("\n\n\t\t No se encontro un registro de este prestamo.");
+		printf("\n\n\t\t No se encontro un registro de este prestamo.\n\n");
 	}
 	else
 	{
@@ -266,11 +258,18 @@ void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa 
 					{
 						sn=validar();
 						if(sn!=1&&sn!=2)
-							printf("Opcion incorrecta.");
+							printf("Introduzca 1 o 2: ");
 					}while(sn!=1&&sn!=2);
 					if(sn==2)
 						return;
 					multas[i].estado=0;
+					for(j=0;j<cantusuarios;j++)
+						if(strcmp(prestamos[i].mat,usuarios[j].mat)==0)
+						{
+							usuarios[j].estado--;
+							break;
+						}
+					break;
 				}
 		strcpy(prestamos[k].fechae,"");
 		time_t t = time(NULL);
@@ -280,10 +279,10 @@ void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa 
 			
 		prestamos[k].estado=0;//0 Significa que ya se pago todo
 			
-			printf("\n\tSe devolvio con exito\n\t");
-			
+		printf("\n\tSe devolvio con exito\n\t");
+		// si llego a este punto, si existe el usuario	
 	}		
-	// si llego a este punto, si existe el usuario	
+	
 	system("pause");		
 	return;
 }
@@ -382,7 +381,7 @@ void conpresdia(struct prestamo prestamos[' '],int cantprestamos)
 	}
 	do
 	{
-		printf("\n\tIngrese el dia:");
+		printf("\n\tIngrese el dia (1 a 31):");
 		diabus=validar();
 		if(diabus<0 || diabus>31)
 			printf("Dato incorrecto.");
@@ -401,7 +400,7 @@ void conpresdia(struct prestamo prestamos[' '],int cantprestamos)
 		printf("\n\tIngrese el ano: ");
 		anobus=validar();
 		if(anobus<2000||anobus>2100)
-			printf("Dato incorrecto. Introduzca una fecha real. ");
+			printf("Dato incorrecto. Introduzca un ano entre 2000 y 2100. ");
 	}while(anobus<2000||anobus>2100);
 	
 	system("cls");
@@ -456,7 +455,7 @@ void conpresmes(struct prestamo prestamos[' '],int cantprestamos)
 		printf("\n\tIngrese el ano: ");
 		anobus=validar();
 		if(anobus<2000||anobus>2100)
-			printf("Dato incorrecto. Introduzca una fecha real. ");
+			printf("Dato incorrecto. Introduzca un ano entre 2000 y 2100. ");
 	}while(anobus<2000||anobus>2100);
 	
 	system("cls");
@@ -504,7 +503,7 @@ void conpresano(struct prestamo prestamos[' '],int cantprestamos)
 		printf("\n\tIngrese el ano: ");
 		anobus=validar();
 		if(anobus<2000||anobus>2100)
-			printf("Dato incorrecto. Introduzca una fecha real. ");
+			printf("Dato incorrecto. Introduzca un ano entre 2000 y 2100. ");
 	}while(anobus<2000||anobus>2100);
 	
 	printf("\n\t\t REPORTE DE PRESTAMOS POR ANO");	

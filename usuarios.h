@@ -32,8 +32,8 @@ int lecturausuarios(struct usuarios usuarios[100],int cantusuarios) // esta func
    		fgets(nombree,50,usuariofile);
    		fgets(direcc,100,usuariofile);
    		// Borra el salto de linea
-   		nombree[strlen(nombree)-1]=' ';
-   		direcc[strlen(direcc)-1]=' ';
+   		nombree[strlen(nombree)-1]='\0';
+   		direcc[strlen(direcc)-1]='\0';
    		
    		strcpy(usuarios[cantusuarios].nombre,nombree);
    		strcpy(usuarios[cantusuarios].direc,direcc);
@@ -67,39 +67,42 @@ int menuusuario(struct usuarios usuarios[100],int cantusuarios) // ESTE MENU SER
 		system("cls");
 		printf("\n\n\n\t\t MENU USUARIOS:");
 		printf("\n\n\t\t 1) Agregar usuarios ");
-		printf("\n\t\t 2) Modificar usuarios");
-		printf("\n\t\t 3) Buscar un usuario por nombre");
-		printf("\n\t\t 4) Consulta general de usuarios");
-		printf("\n\t\t 5) Reportes de usuario");
-		printf("\n\t\t 6) Volver al menu principal");
+		printf("\n\t\t 2) Eliminar usuario");
+		printf("\n\t\t 3) Modificar usuario");
+		printf("\n\t\t 4) Buscar un usuario por nombre");
+		printf("\n\t\t 5) Consulta general de usuarios");
+		printf("\n\t\t 6) Reportes de usuarios");
+		printf("\n\t\t 7) Volver al menu principal");
 		printf("\n\n\t\t Escriba el numero de su eleccion: ");
 		do
 		{
 			op=validar();
 			
-			if(op!=1 && op!=2 && op!=3 && op!=4 && op!=5 && op!=6)
-				printf("\n\n\t Introduzca un numero del 1 al 5: \n");
-		}	while(op!=1 && op!=2 && op!=3 && op!=4 && op!=5 && op!=6);
+			if(op!=1 && op!=2 && op!=3 && op!=4 && op!=5 && op!=6 && op!=7)
+				printf("\n\n\t Introduzca un numero del 1 al 7: \n");
+		}	while(op!=1 && op!=2 && op!=3 && op!=4 && op!=5 && op!=6 && op!=7);
 		
 		switch(op)
 		{
 			case 1: cantusuarios=agusuario(usuarios,cantusuarios);	 // FUNCION AGREGAR USUARIO
 					break;
-			case 2:	modifusuario(usuarios,cantusuarios);	 // FUNCION MODIFICAR USUARIO
+			case 2:	cantusuarios=eliminarusuario(usuarios,cantusuarios); // FUNCION ELIMINAR USUARIO
 					break;
-			case 3:	conusumatricula(usuarios,cantusuarios);			
-					break;	
-			case 4:	conusugen(usuarios,cantusuarios);	// CONSULTA GENERAL DE USUARIOS
-					break;	
-			case 5:	conusu(usuarios,cantusuarios);	// SUBMENU REPORTES DE USUARIOS
+			case 3:	modifusuario(usuarios,cantusuarios);	 // FUNCION MODIFICAR USUARIO
 					break;
-			case 6:	system("cls");
+			case 4:	conusumatricula(usuarios,cantusuarios);			
+					break;	
+			case 5:	conusugen(usuarios,cantusuarios);	// CONSULTA GENERAL DE USUARIOS
+					break;	
+			case 6:	conusu(usuarios,cantusuarios);	// SUBMENU REPORTES DE USUARIOS
+					break;
+			case 7:	system("cls");
 					gotoxy(20,20);
 					printf("Volviendo al menu principal...");
 					break;						
 		}
 			
-	}	while (op!=6);
+	}	while (op!=7);
 	return cantusuarios;
 }
 //_--------------------------------------------------------------------------------------------------
@@ -137,7 +140,7 @@ int agusuario(struct usuarios usuarios[100],int cantusuarios)
 					if(usuarios[cantusuarios].mat[i]=='\t' || usuarios[cantusuarios].mat[i]==' ')
 					{
 						boton=1;
-						printf("\n Introduzca un identificador sin espacios: ");
+						printf("\n\n\t Introduzca un identificador sin espacios: ");
 						break;
 					}
 						
@@ -148,7 +151,6 @@ int agusuario(struct usuarios usuarios[100],int cantusuarios)
 						printf("\n\n\t El identificador esta repetido, introduzca otro: ");
 						break;
 					}
-				
 			} while(boton==1);
 		
 		
@@ -168,27 +170,92 @@ int agusuario(struct usuarios usuarios[100],int cantusuarios)
 			
 			usuarios[cantusuarios].estado=0; // INICIALIZAMOS SU ESTADO EN 0, PORQUE AL SER UN USUARIO NUEVO, NO TIENE MULTAS
 			usuarios[cantusuarios].cantlibros=0; // INICIALIZAMOS SU ESTADO EN 0, PORQUE NO HA PEDIDO PRESTADO NADA
-
+			
+			printf("\n\n\t Usuario agregado con exito!\n");
+		
+			printf("\n\n\t Son correctos los datos introducidos? [1.-Si 2.-No]: ");
 			do
 			{
-				printf("\n\n\t Son correctos los datos introducidos? [1.-Si 2.-No]:");
+				
 				op2=validar();
 				if(op2!=1 && op2!=2)
-					printf("\n Entrada incorrecta. ");
+					printf("\n\n\t Introduzca 1 o 2: ");
 			}	while(op2!=1 && op2!=2);
 			
 		} while(op2==2);
 		cantusuarios++; // AUMENTAMOS LA CANTIDAD TOTAL DE USUARIOS		
-		
+	
+		printf("\n\n\t Desea agregar otro usuario? [1.- Si,2.- No]: ");
 		do
 		{
-			printf("\n\n\t Desea agregar otro usuario? [1.- Si,2.- No]:");
+			
 			op=validar();	
 			if(op2!=1 && op2!=2)
-					printf("\n Entrada incorrecta. ");
+				printf("\n\n\t Introduzca 1 o 2: ");
 		}	while(op!=1 && op!=2);
 	}	while(op==1);
-	printf("\n\nRegresando al menu principal...\n\n\n\n");
+	gotoxy(20,10);
+	printf("Regresando al menu usuarios...\n\n\n");
+	return cantusuarios;
+}
+//-----------------------------------------------------------------------------------------
+int eliminarusuario(struct usuarios usuarios[100],int cantusuarios)
+{
+	int i,j,op,boton=0;
+	char busqueda[30];
+	system("cls");
+	printf("\n\n\n\t ELIMINAR USUARIO.");
+	printf("\n\n\t Introduzca el identificador del usuario que desea eliminar: ");
+	fflush(stdin);
+	gets(busqueda);
+	
+	for(i=0;busqueda[i]!='\0';i++)
+		busqueda[i]=toupper(busqueda[i]);
+	
+	for(i=0;i<cantusuarios;i++)
+		if(strcmp(usuarios[i].mat,busqueda)==0)
+		{
+			boton=1;
+			break;
+		}
+	
+	if(boton==0)
+	{
+		printf("\n\n\t\t No se encontro el usuario.\n\n\t");
+		system("pause");
+		gotoxy(20,10);
+		printf("Regresando al menu usuarios...\n\n\n");
+		return;
+	}
+	
+	printf("\n\n\n\t\t Matricula: %s",usuarios[i].mat);
+	printf("\n\n\t\t Nombre: %s",usuarios[i].nombre);
+	printf("\n\n\t\t Direccion: %s",usuarios[i].direc);
+	printf("\n\n\t\t Cantidad de libros prestados: %d",usuarios[i].cantlibros);
+	
+	printf("\n\n\t Esta seguro de que desea eliminar este usuario? [1.-Si 2.-No]:");
+	do
+	{
+		op=validar();
+		if(op!=1 && op!=2)
+				printf("\n\n\t Introduzca 1 o 2: ");
+	}	while(op!=1 && op!=2);
+	
+	if(op==2)
+	{
+		gotoxy(20,10);
+		printf("Regresando al menu usuarios...\n\n\n");
+		return;
+	}
+	
+	for(j=i;j<cantusuarios-1;j++)
+		usuarios[j]=usuarios[j+1];
+		
+	cantusuarios--;
+	printf("\n\n\t Usuario eliminado con exito!\n");
+	gotoxy(20,10);
+	printf("Regresando al menu usuarios...\n\n\n");
+	
 	return cantusuarios;
 }
 //-----------------------------------------------------------------------------------------
@@ -200,29 +267,33 @@ void modifusuario(struct usuarios usuarios[100],int cantusuarios)
 	*/
 	char busqueda[' '];
 	int boton=0,nuevo;
-	int i,op;
+	int i,j,op;
 	char nuevonom[50];
 	char nuevadir[100];
 	
 	system("cls");
 	printf("\n\n\n\t MODIFICAR USUARIO.");
-	printf("\n\n\t\t Introduzca el identificador del usuario que desea modificar: ");
+	printf("\n\n\t Introduzca el identificador del usuario que desea modificar: ");
 	fflush(stdin);
 	gets(busqueda);
+	
+	for(i=0;busqueda[i]!='\0';i++)
+		busqueda[i]=toupper(busqueda[i]);
+				
 		
 	for(i=0;i<cantusuarios;i++) // CHECAMOS QUE ESTE LA MATRICULA EN LOS USUARIOS QUE EXISTEN EN EL MOMENTO.
-	{
 		if(strcmp(usuarios[i].mat,busqueda)==0)
 		{
 			boton=1;
 			break;	
-		}		
-	}
+		}	
 		
 	if(boton==0)
 	{
-		printf("\n\n\t\t No se encontro el usuario.\n\n");
+		printf("\n\n\t\t No se encontro el usuario.\n\n\t");
 		system("pause");
+		gotoxy(20,10);
+		printf("Regresando al menu usuarios...\n\n\n");
 		return;
 	}
 			
@@ -238,21 +309,31 @@ void modifusuario(struct usuarios usuarios[100],int cantusuarios)
 		printf("\n\n\t\t Introduzca el nuevo nombre: "); 
 		fflush(stdin);
 		gets(nuevonom);
+		for(j=0;nuevonom[j]!='\0';j++)
+			nuevonom[j]=toupper(nuevonom[j]);
 		
 		printf("\n\n\t\t Introduzca la nueva direccion: "); 
 		fflush(stdin);
 		gets(nuevadir);
+		for(j=0;nuevadir[j]!='\0';j++)
+			nuevadir[j]=toupper(nuevadir[j]);
+		
+		printf("\n\n\t Son correctos los datos introducidos? [1.-Si 2.-No]:");
 		do
 		{
-			printf("\n\n\t Son correctos los datos introducidos? [1.-Si 2.-No]:");
 			op=validar();
 			if(op!=1 && op!=2)
-					printf("\n Entrada incorrecta. ");
+					printf("\n\n\t Introduzca 1 o 2: ");
 		}	while(op!=1 && op!=2);
 	}	while(op==2);
 	
 	strcpy(usuarios[i].nombre,nuevonom);
 	strcpy(usuarios[i].direc,nuevadir);
+	printf("\n\n\t Usuario modificado con exito!\n\n\n\t");
+	system("pause");
+	
+	gotoxy(20,10);
+	printf("Regresando al menu usuarios...\n\n\n");
 	return;
 }
 //-------------------------------------------------------------------------------------------------------------
@@ -263,16 +344,17 @@ void conusumatricula(struct usuarios usuarios[100],int cantusuarios)
 	*/
 	int i,boton=0;
 	char busqueda[50];
-	printf("\n\n\n\t CONSULTA POR NOMBRE"); // SE BUSCAN LOS USUARIOS CON UN NOMBRE
+	system("cls");
+	printf("\n\n\n\t CONSULTA POR NOMBRE."); // SE BUSCAN LOS USUARIOS CON UN NOMBRE
 	
-	printf("\n\n\t\t Introduzca el nombre del usuario: ");
+	printf("\n\n\t Introduzca el nombre del usuario: ");
 	fflush(stdin);
 	gets(busqueda);
 	for(i=0;busqueda[i]!='\0';i++)
 		busqueda[i]=toupper(busqueda[i]);
 	
-	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe libros?   Cantidad de libros prestados");
-	
+	system("cls");
+	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
 	for(i=0;i<cantusuarios;i++)
 		if(strstr(usuarios[i].nombre,busqueda)!=NULL)
 		{
@@ -288,6 +370,8 @@ void conusumatricula(struct usuarios usuarios[100],int cantusuarios)
 		printf("\n\n\n\t\t No se encontraron coincidencias.");
 	printf("\n\n\n\n\t\t");
 	system("pause");
+	gotoxy(20,10);
+	printf("Regresando al menu usuarios...\n\n\n");
 	return;
 }
 //-------------------------------------------------------------------------------------------------------------
@@ -296,9 +380,20 @@ void conusugen(struct usuarios usuarios[100],int cantusuarios)
 	/*
 		REPORTE GENERAL DE LOS USUARIOS.
 	*/
-	int i;
-	printf("\n\n\n\t CONSULTA GENERAL DE USUARIOS");
-	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe libros?   Cantidad de libros prestados");
+	int i,j;
+	struct usuarios aux;
+	system("cls");
+	printf("\n\n\n\t CONSULTA GENERAL DE USUARIOS.");
+	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
+	
+	for(i=0;i<cantusuarios;i++) // Ordenamiento por matricula
+		for(j=i+1;j<cantusuarios;j++)
+			if(strcmp(usuarios[i].mat,usuarios[j].mat)>0)
+			{
+				aux=usuarios[i];
+				usuarios[i]=usuarios[j];
+				usuarios[j]=aux;
+			}
 	
 	for(i=0;i<cantusuarios;i++)
 	{
@@ -311,6 +406,8 @@ void conusugen(struct usuarios usuarios[100],int cantusuarios)
 	}
 	printf("\n\n\n\n\t\t");
 	system("pause");
+	gotoxy(20,10);
+	printf("Regresando al menu usuarios...\n\n\n");
 	return;
 }
 //--------------------------------------------------------------------------------------------
@@ -331,15 +428,13 @@ void conusu(struct usuarios usuarios[100],int cantusuarios)
 		printf("\n\t\t 2) Reporte por cantidad de libros prestados");
 		printf("\n\t\t 3) Reporte de usuarios con multa");
 		printf("\n\t\t 4) Volver al menu de usuarios");
-		printf("\n\t\t Escriba el numero de su eleccion: ");
+		printf("\n\n\t\t Escriba el numero de su eleccion: ");
 		do
 		{
 			op=validar();
 			if(op!=1 && op!=2 && op!=3 && op!=4)
 				printf("\n Introduzca un numero del 1 al 4: ");
 		}	while(op!=1 && op!=2 && op!=3 && op!=4);
-		
-		system("cls");
 		
 		switch(op)
 		{
@@ -349,6 +444,9 @@ void conusu(struct usuarios usuarios[100],int cantusuarios)
 			case 2: conusucantlibros(usuarios,cantusuarios);
 					break;
 			case 3:	conusuestado(usuarios,cantusuarios);
+					break;
+			case 4:	gotoxy(20,10);
+					printf("Regresando al menu usuarios...\n\n\n");
 					break;
 		}
 			
@@ -376,7 +474,7 @@ void conusugenrep(struct usuarios usuarios[100],int cantusuarios)
 	
 	for(i=0;i<cantusuarios;i++) // Ordenamiento por matricula
 		for(j=i+1;j<cantusuarios;j++)
-			if(strcmp(usuarios[i].mat,usuarios[j].mat)>0);
+			if(strcmp(usuarios[i].mat,usuarios[j].mat)>0)
 			{
 				aux=usuarios[i];
 				usuarios[i]=usuarios[j];
@@ -384,10 +482,10 @@ void conusugenrep(struct usuarios usuarios[100],int cantusuarios)
 			}
 	
 	system("cls");
-	printf("\n\n\n\t\t REPORTE GENERAL DE USUARIOS");
-	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe libros?   Cantidad de libros prestados");
+	printf("\n\n\n\t\t REPORTE GENERAL DE USUARIOS.");
+	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
 	
-	fprintf(reporteusugen,"LISTA DE USUARIOS POR IDENTIRICADOR\nNombre\tDireccion\tIdentificador\tDebe libros\tCantidad libros prestados");
+	fprintf(reporteusugen,"REPORTE GENERAL DE USUARIOS\nNombre\tDireccion\tIdentificador\tDebe algo\tCantidad libros prestados");
 	
 	for(i=0;i<cantusuarios;i++)
 	{
@@ -400,10 +498,12 @@ void conusugenrep(struct usuarios usuarios[100],int cantusuarios)
 		printf("%d",usuarios[i].cantlibros);
 	}
 	
-	printf("\n\n\t\t LISTO, PARA ABRIR EL ARCHIVO EN EXCEL, UBIQUE EL ARCHIVO 'reporteusugen.txt' Y SIGA LAS INSTRUCCIONES EN EL MANUAL DE USUARIO.");			
+	printf("\n\n\n\t\t LISTO, PARA ABRIR EL ARCHIVO EN EXCEL, UBIQUE EL ARCHIVO 'reporteusugen.txt' Y SIGA LAS INSTRUCCIONES EN EL MANUAL DE USUARIO.");			
 	printf("\n\n\n\n\t\t");
 	system("pause");
 	fclose(reporteusugen);
+	gotoxy(20,10);
+	printf("Regresando al menu reportes...\n\n\n");
 	return;
 	
 }
@@ -440,28 +540,34 @@ void conusucantlibros(struct usuarios usuarios[100],int cantusuarios)
 	
 	system("cls");
 	printf("\n\n\n\t\t REPORTE	POR CANTIDAD DE LIBROS PRESTADOS"); // SE BUSCA TODOS LOS USUARIOS QUE CUMPLEN CON LAS SIGUIENTES CONDICIONES
+	printf("\n\n\t :Que desea realizar?");
+	printf("\n\t 1) Buscar todos los usuarios con X o mas libros prestados");
+	printf("\n\t 2) Buscar todos los usuarios con X o menos libros prestados");	
+	printf("\n\t 3) Buscar todos los usuarios con X libros prestados");
+	printf("\n\t\t Escriba el numero de su eleccion: ");
 	do
 	{
-		printf("\n\n\t :Que desea realizar?");
-		printf("\n\t 1) Buscar todos los usuarios con mas de X libros prestados");
-		printf("\n\t 2) Buscar todos los usuarios con menos de X libros prestados");	
-		printf("\n\t 3) Buscar todos los usuarios con X libros prestados");
-		printf("\n\t\t Escriba el numero de su eleccion: ");
 		op=validar();
+		if(op!= 1 && op!=2 && op!=3)
+			printf("\n\n\t Introduzca un numero del 1 al 3: ");
 	}	while(op!= 1 && op!=2 && op!=3);
 	
 	printf("\n\n\t Cantidad de libros: ");
+	if(op==1)
+		printf("(0 para ver todos)  ");
 	busqueda=validar();
 	
-	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe libros?   Cantidad de libros prestados");
-	fprintf(reporteusucant,"LISTA DE USUARIOS POR CANTIDAD DE LIBROS PRESTADOS\nNombre\tDireccion\tIdentificador\tDebe libros\tCantidad libros prestados");
+	system("cls");
+	printf("\n\n\n\t\t REPORTE	POR CANTIDAD DE LIBROS PRESTADOS.");
+	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
+	fprintf(reporteusucant,"LISTA DE USUARIOS POR CANTIDAD DE LIBROS PRESTADOS\nNombre\tDireccion\tIdentificador\tDebe algo\tCantidad libros prestados");
 	
 	for(i=0;i<cantusuarios;i++) // SE HACE EL SWITCH PARA SABER QUE PIDIO EL USUARIO.
 	{	
 		switch(op)
 		{
 			case 1:
-					if(usuarios[i].cantlibros>busqueda)
+					if(usuarios[i].cantlibros>=busqueda)
 					{
 						printf("\n%-40s%-78s%-15s",usuarios[i].nombre,usuarios[i].direc,usuarios[i].mat);
 						if(usuarios[i].estado==0)
@@ -478,7 +584,7 @@ void conusucantlibros(struct usuarios usuarios[100],int cantusuarios)
 					}
 					break;	
 			case 2:
-					if(usuarios[i].cantlibros<busqueda)
+					if(usuarios[i].cantlibros<=busqueda)
 					{
 						printf("\n%-40s%-78s%-15s",usuarios[i].nombre,usuarios[i].direc,usuarios[i].mat);
 						if(usuarios[i].estado==0)
@@ -514,11 +620,12 @@ void conusucantlibros(struct usuarios usuarios[100],int cantusuarios)
 					break;		
 		}		
 	}
-	printf("\n\n\t\t LISTO, PARA ABRIR EL ARCHIVO EN EXCEL, UBIQUE EL ARCHIVO 'reporteusucant.txt' Y SIGA LAS INSTRUCCIONES EN EL MANUAL DE USUARIO.");			
+	printf("\n\n\n\t\t LISTO, PARA ABRIR EL ARCHIVO EN EXCEL, UBIQUE EL ARCHIVO 'reporteusucant.txt' Y SIGA LAS INSTRUCCIONES EN EL MANUAL DE USUARIO.");			
 	printf("\n\n\n\n\t\t");
 	system("pause");
-	
 	fclose(reporteusucant);
+	gotoxy(20,10);
+	printf("Regresando al menu reportes...\n\n\n");
 	return;
 }
 //-------------------------------------------------------------------------------------------------------------
@@ -538,11 +645,10 @@ void conusuestado(struct usuarios usuarios[100],int cantusuarios)
 		system("pause");   
 		exit(1);             
 	}
-	
-	printf("\n\n\n\t\t CONSULTA	DE USUARIOS CON MULTAS"); // SE BUSCAN LOS USUARIOS EN LOS CUALES USUARIOS[I].ESTADO TENGAN UN '1' , OSEA, TENGAN ALGUNA MULTA
-	 
-	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe libros?   Cantidad de libros prestados");
-	fprintf(reporteusuestado,"LISTA DE USUARIOS CON MULTAS\nNombre\tDireccion\tIdentificador\tDebe libros\tCantidad libros prestados");
+	system("cls");
+	printf("\n\n\n\t REPORTE DE USUARIOS CON MULTAS."); // SE BUSCAN LOS USUARIOS EN LOS CUALES USUARIOS[I].ESTADO TENGAN UN '1' , OSEA, TENGAN ALGUNA MULTA
+	printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
+	fprintf(reporteusuestado,"LISTA DE USUARIOS CON MULTAS\nNombre\tDireccion\tIdentificador\tDebe algo\tCantidad libros prestados");
 	
 	for(i=0;i<cantusuarios;i++)
 		if(usuarios[i].estado!=0)

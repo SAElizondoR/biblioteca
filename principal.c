@@ -35,7 +35,7 @@ int main()
 	valormulta=lecturavalor(multas,cantmultas);
 	cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
 	impresionmultas(multas,cantmultas,valormulta);
-	printf("\n Sistema de la biblioteca.\n Bienvenido.\n\n");
+	printf("\n\n\n\n\n\t\t\t\t\t SISTEMA DE LA BIBLIOTECA\n\n\n\n\n\t\t\t\t\t BIENVENIDO\n\n\n\n\n\t\t\t");
 	system("pause");
 	do
 	{
@@ -65,9 +65,10 @@ int main()
 		{
 			case 1:
 				valormulta=multax(multas,cantmultas,valormulta);
+				cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
 				break;
 			case 2:
-				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos,multas,cantmultas);
+				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos,multas,cantmultas,valormulta);
 				break;
 			case 3:
 				cantlibros=libs(libros,cantlibros,prestamos,cantprestamos);
