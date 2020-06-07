@@ -32,7 +32,7 @@ float multax(struct multa multas[200],int cantmultas,float valormulta)
 	return valormulta;
 }
 
-int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo prestamos[200],int cantprestamos)
+int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo prestamos[200],int cantprestamos,struct usuarios usuarios[100],int cantusuarios)
 {
 	int i,j,dia,mes,ano,diferencia;
 	char aux[20];
@@ -102,6 +102,12 @@ int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo presta
 					strcpy(multas[cantmultas].fecha,prestamos[i].fechap);
 					multas[cantmultas].estado=1;
 					cantmultas++;
+					for(j=0;j<cantusuarios;j++)
+						if(strcpy(prestamos[i].mat,usuarios[j].mat)==0)
+						{
+							usuarios[j].estado=1;
+							break;
+						}
 				}
 			}
 		}
@@ -390,5 +396,22 @@ void multaspormonto(struct multa multas[200],int cantmultas)
 	printf("\n\n\n\n\t\t");
 	fclose(ap);
 	system("pause");
+	return;
+}
+
+void impresionmultas(struct multa multas[200],int cantmultas,float valormulta)
+{
+	int i;
+	FILE *ap;
+	ap = fopen("multas.txt","w"); // Se checa que funcione correctamente.
+	if(ap == NULL)
+	{
+		printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\tError! Fallo en el sistema.\n\n\n\n\n");   
+		exit(1);             
+	}
+	fprintf("%f",valormulta)
+	for(i=0;i<cantmultas;i++)
+		fprintf("\n%d\t%f\t%s\t%d",multas[i].num,multas[i].monto,multas[i].fecha,multas[i].estado);
+	fclose(ap);
 	return;
 }
