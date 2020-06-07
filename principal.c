@@ -33,7 +33,8 @@ int main()
 	cantusuarios=lecturausuarios(usuarios,cantusuarios);
 	cantprestamos=lecturaprestamos(prestamos,cantprestamos);
 	valormulta=lecturavalor(multas,cantmultas);
-	cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos);
+	cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
+	impresionmultas(multas,cantmultas,valormulta);
 	printf("\n Sistema de la biblioteca.\n Bienvenido.\n\n");
 	system("pause");
 	do
@@ -66,10 +67,10 @@ int main()
 				valormulta=multax(multas,cantmultas,valormulta);
 				break;
 			case 2:
-				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos);
+				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos,multas,cantmultas);
 				break;
 			case 3:
-				cantlibros=libs(libros,cantlibros);
+				cantlibros=libs(libros,cantlibros,prestamos,cantprestamos);
 				break;
 			case 4:
 				cantusuarios=usus(usuarios,cantusuarios);

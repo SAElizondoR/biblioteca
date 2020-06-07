@@ -1,9 +1,9 @@
-int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos)
+int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas)
 {
 	int i;
 
 	//MENU
-	cantprestamos=menuprestamos(prestamos,cantprestamos,cantlibros,cantusuarios,usuarios,libros);	
+	cantprestamos=menuprestamos(prestamos,cantprestamos,cantlibros,cantusuarios,usuarios,libros,multas,cantmultas);	
 	
 //SE GUARDAN LOS DATOS
 	impresionprestamos(prestamos,cantprestamos);
@@ -46,7 +46,7 @@ int lecturaprestamos(struct prestamo prestamos[' '],int cantprestamos)
 }
 
 //MENU DE OPCIONES DE PRESTAMOS
-int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' ']) // ESTE MENU SERA UN SUBMENU DEL MENU PRINCIPAL.
+int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' '],struct multa multas[200],int cantmultas) // ESTE MENU SERA UN SUBMENU DEL MENU PRINCIPAL.
 {
 	int op,i;
 	do
@@ -71,7 +71,7 @@ int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,i
 		{
 			case 1: cantprestamos=represtamos(prestamos,cantprestamos,cantlib,cantusuarios,usuarios,libros);	 // FUNCION REALIZAR PRESTAMO
 					break;
-			case 2:	entprestamos(prestamos,cantprestamos);	 // FUNCION HACER LA ENTREGA DE UN LIBRO
+			case 2:	entprestamos(prestamos,cantprestamos,multas,cantmultas);	 // FUNCION HACER LA ENTREGA DE UN LIBRO
 					break;
 			case 3:conprestamos(prestamos,cantprestamos);		// SUBMENU CONSULTA
 					break;		
@@ -227,11 +227,11 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 
 
 //Esta funcion se usa para regresar los libros
-void entprestamos(struct prestamo prestamos[' '],int cantprestamos)
+void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas)
 {
 	char busqueda[' '],numero[' '];
 	int boton=0,nuevo;
-	int i,k;
+	int sn,i,k;
 	printf("\n\n\n\t DEVOLUCION DE UN LIBRO:");
 	//SE INGRESA LA CLAVE
 	printf("\n\n\t\t Introduzca la clave del libro que desea devolver:");
@@ -257,22 +257,31 @@ void entprestamos(struct prestamo prestamos[' '],int cantprestamos)
 	}
 	else
 	{
+		for(i=0;i<cantmultas;i++)
+			if(multas[i].num==prestamos[k].num)
+				{
+					printf("\n\n\t El usuario cuenta con una multa por el monto de %.2f.",multas[i].monto);
+					printf("\n\t Se pago la multa? [1) Si - 2) No]");
+					do
+					{
+						sn=validar();
+						if(sn!=1&&sn!=2)
+							printf("Opcion incorrecta.");
+					}while(sn!=1&&sn!=2);
+					if(sn==2)
+						return;
+					multas[i].estado=0;
+				}
 		strcpy(prestamos[k].fechae,"");
 		time_t t = time(NULL);
   		struct tm *tm = localtime(&t);
   		//Aqui obtenemos la fecha de hoy para cambiar los datos de esta
   		strftime(prestamos[k].fechae, 100, "%d/%m/%y", tm);
 			
-			
-			prestamos[k].estado=0;//0 Significa que ya se pago todo
+		prestamos[k].estado=0;//0 Significa que ya se pago todo
 			
 			printf("\n\tSe devolvio con exito\n\t");
 			
-				/* 								AQUI IRA UN CODIGO DONDE SE CHECARA SI SE DEBERA DE APLICAR UNA MULTA
-				EN CASO DE QUE SE GENERE UNA MULTA DE ESTA DEVOLUCION SE DEBERA DE MODIFICAR EL ESTADO DEL USUARIO PARA QUE NO ME PUEDA RENTAR MAS LIBROS ACTUALMENTE
-		//oinasoifnasiofnioasnfoiasnfoinasoifnasoifnasofnaoisnfioasnfoiasnfionasiofnasiofnioasnioasnfioasnfionasfionasiofnaisonfioasnfioanfionafghfdshdfhdfhdfhhf
-			
-			*/
 	}		
 	// si llego a este punto, si existe el usuario	
 	system("pause");		

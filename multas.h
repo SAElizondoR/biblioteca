@@ -409,9 +409,9 @@ void impresionmultas(struct multa multas[200],int cantmultas,float valormulta)
 		printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\tError! Fallo en el sistema.\n\n\n\n\n");   
 		exit(1);             
 	}
-	fprintf("%f",valormulta)
+	fprintf(ap,"%f",valormulta);
 	for(i=0;i<cantmultas;i++)
-		fprintf("\n%d\t%f\t%s\t%d",multas[i].num,multas[i].monto,multas[i].fecha,multas[i].estado);
+		fprintf(ap,"\n%d\t%f\t%s\t%d",multas[i].num,multas[i].monto,multas[i].fecha,multas[i].estado);
 	fclose(ap);
 	return;
 }

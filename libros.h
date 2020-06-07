@@ -1,4 +1,4 @@
-int libs(struct biblio libros[100],int cantl)
+int libs(struct biblio libros[100],int cantl,struct prestamo prestamos[' '],int cantprestamos)
 {	
 	//--------------VARIABLES---------------
 	int op,i,j,k,v,letra,cunt=0;
@@ -54,7 +54,7 @@ int libs(struct biblio libros[100],int cantl)
 					break;
 			case 3: search(libros,cunt);
 					break;
-			case 4: reportes(libros,cunt);
+			case 4: reportes(libros,cunt,prestamos,cantprestamos);
 					break;
 			case 5: system("cls");
 					gotoxy(20,20);
@@ -771,7 +771,7 @@ void isearch(struct biblio libros[100],int cunt){ //Busqueda de libro por el su 
 //----------FIN DE BUSQUEDAS---------
 
 //------------REPORTES DE LIBROS--------
-void reportes(struct biblio libros[100],int cunt){
+void reportes(struct biblio libros[100],int cunt,struct prestamo prestamos[200],int cantprestamos){
 	int booleano,op;
 	char num[' '];
 	/*
@@ -784,7 +784,7 @@ void reportes(struct biblio libros[100],int cunt){
 		//Formato de menú de reportes de libros
 		system("cls");
 		gotoxy(20,2);
-		printf("REPORTES DE LIBROS %d\n\n\n\n\n",cunt);
+		printf("REPORTES DE LIBROS\n\n\n\n\n");
 		printf("\t\tIngrese el tipo de reporte que desea ver\n\n");
 		printf("\t\t1.- Reporte de libros por titulo\n\n");
 		printf("\t\t2.- Reporte de libros por autor\n\n");
@@ -836,7 +836,7 @@ void reportes(struct biblio libros[100],int cunt){
 					break;	
 			case 7: rclave(libros,cunt);
 					break;
-			case 8: redo(libros,cunt);
+			case 8: redo(libros,cunt,prestamos,cantprestamos);
 					break;										
 			case 9:	system("cls");
 					gotoxy(20,10);
@@ -1347,7 +1347,7 @@ void rano(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados p
 		
 }
 
-void redo(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados por el estado del libro
+void redo(struct biblio libros[100],int cunt,struct prestamo prestamos[' '],int cantprestamos){ 		//Reporte de libros ordenados por el estado del libro
 		char temp[' '];
 		int ban,l;
 		struct biblio aux;
@@ -1367,14 +1367,14 @@ void redo(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados p
 		
 		gotoxy(20,2);
 		printf("REPORTES DE LIBROS POR ESTADO\n\n\n\n\n");
-		fprintf(repedo,"REPORTES DE LIBROS POR ESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tEXISTENCIA\tDIA\tMES\tAÑO");
+		fprintf(repedo,"REPORTES DE LIBROS POR ESTADO\nCLAVE\tAUTOR\tTITULO\tCATEGORIA\tPAIS\tEDITORIAL\tN_EDICION\tEXISTENCIA\tDIA\tMES\tAÑO\tESTADO");
 		//Ordenamiento por autor
 		
 			for(i=0;i<cunt;i++){
 			
-		      for(j=0;j<cunt-1;j++){
+		      for(j=i+1;j<cunt-1;j++){
 		      	
-		         if(libros[i].edi==0){
+		         if(libros[i].autor==0){
 		            aux=libros[i];
 		            libros[i]=libros[j];
 		            libros[j]=aux;
@@ -1388,14 +1388,33 @@ void redo(struct biblio libros[100],int cunt){ 		//Reporte de libros ordenados p
 		//-------------Fin del ordenamiento---------------------
 		
 		encabezado();
+		gotoxy(175,8);
+		printf("ESTADO");
 		l=8;
 		
 		//-------------Escritura de la tabla--------------------
 		for(i=0;i<cunt;i++)
 		{
+			for(j=0;j<cantprestamos;j++)
+				if(strcmp(prestamos[j].clave,libros[i].clave)==0)
+					break;
+			if(j==cantprestamos)
+			{
 				fprintf(repedo,"\n%s\t%s\t%s\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t",libros[i].clave,libros[i].autor,libros[i].titulo,libros[i].cat,libros[i].pais,libros[i].editorial,libros[i].edi,libros[i].exi,libros[i].dia,libros[i].mes,libros[i].ano);
+				fprintf(repedo,"En biblioteca");
 				tabla(libros,l,i);
-				l++;		
+				gotoxy(175,l+3);
+				printf("En biblioteca");
+			}
+			else
+			{
+				fprintf(repedo,"\n%s\t%s\t%s\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t",libros[i].clave,libros[i].autor,libros[i].titulo,libros[i].cat,libros[i].pais,libros[i].editorial,libros[i].edi,libros[i].exi,libros[i].dia,libros[i].mes,libros[i].ano);
+				fprintf(repedo,"Prestado");
+				tabla(libros,l,i);
+				gotoxy(175,l+3);
+				printf("Prestado");
+			}
+			l++;
 		}
 		printf("\n\n\n\n\n\n\n\n\n\n\n");
 		printf("\n\n\t\t LISTO, PARA ABRIR EL ARCHIVO EN EXCEL, UBIQUE EL ARCHIVO 'rep_lib_edo.txt' Y SIGA LAS INSTRUCCIONES EN EL MANUAL DE USUARIO.");			

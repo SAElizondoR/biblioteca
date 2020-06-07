@@ -71,7 +71,7 @@ void conusuestado(struct usuarios usuarios[100],int cantusuarios);
 void conusucantlibros(struct usuarios usuarios[100],int cantusuarios);
 
 // LIBROS
-int libs(struct biblio libros[100],int cantl);
+int libs(struct biblio libros[100],int cantl,struct prestamo prestamos[' '],int cantprestamos);
 
 //eliminar libro
 void rip(struct biblio libros[100],int cunt);
@@ -80,7 +80,7 @@ void rip(struct biblio libros[100],int cunt);
 int add(struct biblio libros[100],int cunt);
 
 // reportes
-void reportes(struct biblio libros[100],int cunt),rtitulo(struct biblio libros[100],int cunt),rautor(struct biblio libros[100],int cunt),rano(struct biblio libros[100],int cunt),rpais(struct biblio libros[100],int cunt),reditorial(struct biblio libros[100],int cunt),rcant(struct biblio libros[100],int cunt),rclave(struct biblio libros[100],int cunt),redo(struct biblio libros[100],int cunt);
+void reportes(struct biblio libros[100],int cunt,struct prestamo prestamos[200],int cantprestamos),rtitulo(struct biblio libros[100],int cunt),rautor(struct biblio libros[100],int cunt),rano(struct biblio libros[100],int cunt),rpais(struct biblio libros[100],int cunt),reditorial(struct biblio libros[100],int cunt),rcant(struct biblio libros[100],int cunt),rclave(struct biblio libros[100],int cunt), redo(struct biblio libros[100],int cunt,struct prestamo prestamos[' '],int cantprestamos);
 
 // formatos
 void encabezado(),tabla(struct biblio libros[100],int l,int i);
@@ -94,14 +94,14 @@ void intercambioA_S();
 int contarlibros(struct biblio libros[100]);
 
 // PRESTAMOS
-int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos);
-int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' ']);
+int prests(struct biblio libros[100],struct usuarios usuarios[100],struct prestamo prestamos[200],int cantlibros,int cantusuarios,int cantprestamos,struct multa multas[200],int cantmultas);
+int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' '],struct multa multas[200],int cantmultas);
 
 //	FUNCIONES PARA CARGAR Y GUARDAR DATOS
 void impresionprestamos(struct prestamo prestamos[' '],int cantprestamos);
 //	FUNCIONES DEL MENU PRINCIPAL
 int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' ']);
-void entprestamos(struct prestamo prestamos[' '],int cantprestamos);
+void entprestamos(struct prestamo prestamos[' '],int cantprestamos,struct multa multas[200],int cantmultas);
 //	FUNCIONES DE CONSULTAS
 void conprestamos(struct prestamo prestamos[' '],int cantprestamos);
 void conpresgen(struct prestamo prestamos[' '],int cantprestamos);
@@ -123,7 +123,7 @@ void convertirfechap(int i,char dia2[' '],char mes2[' '],char ano2[' '],struct p
 float multax(struct multa multas[200],int cantmultas,float valormulta);
 
 // lectura
-int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo prestamos[200],int cantprestamos);
+int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo prestamos[200],int cantprestamos,struct usuarios usuarios[100],int cantusuarios);
 int compara_fechas(int dia1,int mes1,int ano1,int dia2,int mes2,int ano2);
 float lecturavalor(struct multa multas[200],int cantmultas);
 
