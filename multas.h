@@ -104,7 +104,7 @@ int lecturamultas(struct multa multas[200],int cantmultas,struct prestamo presta
 					multas[cantmultas].estado=1;
 					cantmultas++;
 					for(j=0;j<cantusuarios;j++)
-						if(strcpy(prestamos[i].mat,usuarios[j].mat)==0)
+						if(strcmp(prestamos[i].mat,usuarios[j].mat)==0)
 						{
 							usuarios[j].estado++;
 							break;

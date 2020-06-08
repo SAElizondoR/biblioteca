@@ -83,17 +83,29 @@ int menuprestamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,i
 //_--------------------------------------------------------------------------------------------------
 int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int cantusuarios,struct usuarios usuarios[' '],struct biblio libros[' '])
 {
-	int sn,op,op2,i,boton2=0,boton3=0,boton4=0;
+	int sn,l,op,op2,i,boton2=0,boton3=0,boton4=0;
 	char aux[10],numero[' '];
 	printf("\n\n\n\t REALIZAR UN PRESTAMO:");
 	do
 	{	
+		printf("\n\n\nNombre                                  Direccion                                                                     Identificador  Debe algo?   Cantidad de libros prestados");
+		for(i=0;i<cantusuarios;i++)
+		{
+			printf("\n%-40s%-78s%-15s",usuarios[i].nombre,usuarios[i].direc,usuarios[i].mat);
+			if(usuarios[i].estado==0)
+				printf("No             ");
+			else
+				printf("Si             ");
+			printf("%d",usuarios[i].cantlibros);	
+		}
 		do
 		{
 			//Se ingresan los datos
-			printf("\n\n\t Introduzca el identificador del usuario: ");
+			printf("\n\n\n\t Introduzca el identificador del usuario (Esc+Enter para cancelar): ");
 			fflush(stdin);
 			gets(prestamos[cantprestamos].mat);
+			if(prestamos[cantprestamos].mat[0]==27)
+				return cantprestamos;
 			boton2=0;
 			boton3=0;
 			boton4=0;			
@@ -133,12 +145,23 @@ int represtamos(struct prestamo prestamos[' '],int cantprestamos,int cantlib,int
 			}
 		} while(boton2==0);
 		
-		
+		system("cls");
+		encabezado();
+	    l = 8;
+	
+	    //-------------Escritura de la tabla--------------------
+	    for (i = 0; i < cantlib; i++) {
+	
+	      tabla(libros, l, i);
+	      l++;
+	    }
 		//SE PREGUNTA LA CLAVE DEL LIBRO
-		printf("\n\n\t Introduzca la clave del libro: ");
+		printf("\n\n\n\t Introduzca la clave del libro (Esc+Enter para cancelar): ");
 		char busca[' '];
 		fflush(stdin);
 		gets(busca);
+		if(busca[0]==27)
+			return cantprestamos;
 		boton2=0;
 		boton3=0;
 		for(i=0;i<strlen(busca);i++)  // MAYUSCULAS
@@ -412,7 +435,7 @@ void conpresdia(struct prestamo prestamos[' '],int cantprestamos)
 		
 		convertirfechae(i,dia,mes,ano,prestamos,cantprestamos);
 		convertirfechap(i,dia2,mes2,ano2,prestamos,cantprestamos);
-		if(atoi(dia)==diabus&&atoi(mes)==mesbus&atoi(ano)==anobus%100 || atoi(dia2)==diabus&&atoi(mes2)==mesbus&atoi(ano2)==anobus%100 )
+		if(atoi(dia)==diabus&&atoi(mes)==mesbus&&atoi(ano)==anobus%100 || atoi(dia2)==diabus&&atoi(mes2)==mesbus&&atoi(ano2)==anobus%100 )
 		{
 			boton=1;
 			l++;
@@ -467,7 +490,7 @@ void conpresmes(struct prestamo prestamos[' '],int cantprestamos)
 		
 		convertirfechae(i,dia,mes,ano,prestamos,cantprestamos);
 		convertirfechap(i,dia2,mes2,ano2,prestamos,cantprestamos);
-		if(atoi(mes)==mesbus&atoi(ano)==anobus%100 || atoi(mes2)==mesbus&atoi(ano2)==anobus%100)
+		if(atoi(mes)==mesbus&&atoi(ano)==anobus%100 || atoi(mes2)==mesbus&&atoi(ano2)==anobus%100)
 		{	
 			boton=1;
 			l++;

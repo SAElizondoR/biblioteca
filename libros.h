@@ -75,31 +75,42 @@ int add(struct biblio libros[100], int cunt) {
 
     system("cls");
     printf("\n\n\n\t AGREGAR LIBRO. \n\n");
+	
+	do
+	{
+		printf("\t Introduzca el titulo: ");
+	    fflush(stdin);
+	    gets(libros[cunt].titulo);
+	    // Convierte todo a mayusculas (asi como los siguientes ciclos despues del
+	    // gets)
+	    for (j = 0;libros[cunt].titulo[j]!='\t' && libros[cunt].titulo[j] != '\0'; j++)
+	      libros[cunt].titulo[j] = toupper(libros[cunt].titulo[j]);
+	    if(libros[cunt].titulo[j] != '\0')
+	    	printf("\n\n\t No puede tener tabulaciones. ");
+	}while(libros[cunt].titulo[j] != '\0');
+    
+	do
+	{
+		printf("\n\n\t Introduzca el nombre del autor: ");
+	    fflush(stdin);
+	    gets(libros[cunt].autor);
+	    for (j = 0;libros[cunt].autor[j]!='\t' && libros[cunt].autor[j] != '\0'; j++)
+	      libros[cunt].autor[j] = toupper(libros[cunt].autor[j]);
+	    if(libros[cunt].autor[j] != '\0')
+	    	printf("\n\n\t No puede tener tabulaciones. ");
+	}while(libros[cunt].autor[j] != '\0');
+    
 
-    printf("\t Introduzca el titulo: ");
-    fflush(stdin);
-    gets(libros[cunt].titulo);
-    // Convierte todo a mayusculas (asi como los siguientes ciclos despues del
-    // gets)
-    for (j = 0; libros[cunt].titulo[j] != '\0'; j++)
-      libros[cunt].titulo[j] = toupper(libros[cunt].titulo[j]);
-
-    printf("\n\n\t Introduzca el nombre del autor: ");
-    fflush(stdin);
-    gets(libros[cunt].autor);
-    for (j = 0; libros[cunt].autor[j] != '\0'; j++)
-      libros[cunt].autor[j] = toupper(libros[cunt].autor[j]);
-
-    printf("\n\n\t Introduzca la categoria del libro a agregar\n\n 000 --- "
-           "Informatica, informacion y obras generales\n\n ");
-    printf("100 --- Filosofia y psicologia\n\n");
-    printf("200 --- Religion\n\n");
-    printf("300 --- Ciencias sociales\n\n");
-    printf("400 --- Lengua\n\n");
-    printf("500 --- Ciencia\n\n");
-    printf("600 --- Tecnologia y ciencia aplicada\n\n");
-    printf("700 --- Arte y recreacion\n\n");
-    printf("800 --- Literatura\n\n");
+    printf("\n\n\t Introduzca la categoria del libro a agregar\n\n\t 000 --- "
+           "Informatica, informacion y obras generales\n\n\t ");
+    printf("100 --- Filosofia y psicologia\n\n\t");
+    printf("200 --- Religion\n\n\t");
+    printf("300 --- Ciencias sociales\n\n\t");
+    printf("400 --- Lengua\n\n\t");
+    printf("500 --- Ciencia\n\n\t");
+    printf("600 --- Tecnologia y ciencia aplicada\n\n\t");
+    printf("700 --- Arte y recreacion\n\n\t");
+    printf("800 --- Literatura\n\n\t");
     printf("900 --- Historia y geografia\n\n");
     do {
       do {
@@ -134,7 +145,7 @@ int add(struct biblio libros[100], int cunt) {
       libros[cunt].editorial[j] = toupper(libros[cunt].editorial[j]);
     }
 
-    printf("\n\n\tIntroduzca el país: ");
+    printf("\n\n\tIntroduzca el pais: ");
     fflush(stdin);
     gets(libros[cunt].pais);
     for (j = 0; libros[cunt].pais[j] != '\0'; j++) {
@@ -150,7 +161,7 @@ int add(struct biblio libros[100], int cunt) {
       libros[cunt].edi = atoi(num);
       if (booleano == 0 || libros[cunt].edi < 1) {
         printf("\n\n El numero de edicion que ingreso no es valido!\n");
-        printf("P\tor favor introduzca un valor entero: ");
+        printf("\tPor favor introduzca un valor entero: ");
       }
 
     } while (booleano == 0 || libros[cunt].edi < 1);
@@ -206,14 +217,14 @@ int add(struct biblio libros[100], int cunt) {
 
       do {
 
-        printf("\n\n\tIntroduzca el año de publicacion: ");
+        printf("\n\n\tIntroduzca el ano de publicacion: ");
         ;
         fflush(stdin);
         gets(num);
         booleano = revisarInt(num); // Validacion del año de publicacion
 
         if (booleano == 0) {
-          printf("\n\nEl año ingresado no es valido!\n");
+          printf("\n\nEl ano ingresado no es valido!\n");
           printf("\tPor favor introduzca un valor entero: ");
         }
 
@@ -225,7 +236,7 @@ int add(struct biblio libros[100], int cunt) {
 
       if (booleano == 0) {
         printf("\n\n La fecha ingresada no es valida!\n");
-        printf("Por favor ingrese una fecha de publicación valida: ");
+        printf("\tPor favor ingrese una fecha de publicación valida: ");
       }
     } while (booleano == 0);
 
@@ -424,7 +435,7 @@ void search(struct biblio libros[100], int cunt) {
 
   do {
 
-    // Formato de menú de busquedas
+    // Formato de menu de busquedas
     system("cls");
     printf("\n\n\n\t BUSQUEDA DE LIBROS\n\n");
     printf("\t\tIngrese el tipo de busqueda que desea realizar\n");
@@ -432,7 +443,7 @@ void search(struct biblio libros[100], int cunt) {
     printf("\t\t2.- Busqueda de libros por categoria\n");
     printf("\t\t3.- Busqueda de libros por identificador\n");
     printf("\t\t4.- Busqueda de libros por nombre\n");
-    printf("\t\t5.- Regresar al menú de libros\n");
+    printf("\t\t5.- Regresar al menu de libros\n");
     do {
 
       do {
@@ -561,15 +572,15 @@ void csearch(
     gotoxy(20, 2);
 
     printf("\n\n\n\t\tBUSQUEDA DE LIBROS POR CATEGORIA\n\n");
-    printf("Ingrese la categoria del libro a buscar\n\n 000 --- Informática, "
-           "información y obras generales\n\n ");
-    printf("100 --- Filosofía y psicología\n\n");
-    printf("200 --- Religión\n\n");
+    printf("Ingrese la categoria del libro a buscar\n\n 000 --- Informatica, "
+           "informacion y obras generales\n\n ");
+    printf("100 --- Filosofia y psicologia\n\n");
+    printf("200 --- Religion\n\n");
     printf("300 --- Ciencias sociales\n\n");
     printf("400 --- Lengua\n\n");
     printf("500 --- Ciencia\n\n");
     printf("600 --- Tecnologia y ciencia aplicada\n\n");
-    printf("700 --- Arte y recreación\n\n");
+    printf("700 --- Arte y recreacion\n\n");
     printf("800 --- Literatura\n\n");
     printf("900 --- Historia y geografia\n\n");
     do {
@@ -1392,9 +1403,11 @@ void redo(
   //-------------Escritura de la tabla--------------------
   for (i = 0; i < cunt; i++) {
     for (j = 0; j < cantprestamos; j++)
-      if (strcmp(prestamos[j].clave, libros[i].clave) == 0 &&
+    {
+    	if (strcmp(prestamos[j].clave, libros[i].clave) == 0 &&
           prestamos[j].estado == 1)
         break;
+	}
     if (j == cantprestamos) {
       fprintf(repedo, "\n%s\t%s\t%s\t%d\t%s\t%s\t%d\t%d\t%d\t%d\t%d\t%d",
               libros[i].clave, libros[i].autor, libros[i].titulo, libros[i].cat,

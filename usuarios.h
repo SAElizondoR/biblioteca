@@ -153,20 +153,30 @@ int agusuario(struct usuarios usuarios[100],int cantusuarios)
 					}
 			} while(boton==1);
 		
-		
-			printf("\n\n\t Introduzca el nombre: ");
-			fflush(stdin);
-			gets(usuarios[cantusuarios].nombre);
-			
-			for(i=0;usuarios[cantusuarios].nombre[i]!='\0';i++)
+			do
+			{
+				printf("\n\n\t Introduzca el nombre: ");
+				fflush(stdin);
+				gets(usuarios[cantusuarios].nombre);
+				
+				for(i=0;usuarios[cantusuarios].nombre[i]!='\t' && usuarios[cantusuarios].nombre[i]!='\0';i++)
 					usuarios[cantusuarios].nombre[i]=toupper(usuarios[cantusuarios].nombre[i]);
+				if(usuarios[cantusuarios].nombre[i] != '\0')
+	    			printf("\n\n\t No puede tener tabulaciones. ");
+			}while(usuarios[cantusuarios].nombre[i] != '\0');
 			
-			printf("\n\n\t Introduzca la direccion: ");
-			fflush(stdin);
-			gets(usuarios[cantusuarios].direc);
-			
-			for(i=0;usuarios[cantusuarios].direc[i]!='\0';i++)
+			do
+			{
+				printf("\n\n\t Introduzca la direccion: ");
+				fflush(stdin);
+				gets(usuarios[cantusuarios].direc);
+				
+				for(i=0;usuarios[cantusuarios].direc[i]!='\t' && usuarios[cantusuarios].direc[i]!='\0';i++)
 					usuarios[cantusuarios].direc[i]=toupper(usuarios[cantusuarios].direc[i]);
+				if(usuarios[cantusuarios].direc[i] != '\0')
+	    			printf("\n\n\t No puede tener tabulaciones. ");
+			}while(usuarios[cantusuarios].direc[i] != '\0');
+			
 			
 			usuarios[cantusuarios].estado=0; // INICIALIZAMOS SU ESTADO EN 0, PORQUE AL SER UN USUARIO NUEVO, NO TIENE MULTAS
 			usuarios[cantusuarios].cantlibros=0; // INICIALIZAMOS SU ESTADO EN 0, PORQUE NO HA PEDIDO PRESTADO NADA
@@ -225,7 +235,7 @@ int eliminarusuario(struct usuarios usuarios[100],int cantusuarios)
 		system("pause");
 		gotoxy(20,10);
 		printf("Regresando al menu usuarios...\n\n\n");
-		return;
+		return cantusuarios;
 	}
 	
 	printf("\n\n\n\t\t Matricula: %s",usuarios[i].mat);
@@ -245,7 +255,7 @@ int eliminarusuario(struct usuarios usuarios[100],int cantusuarios)
 	{
 		gotoxy(20,10);
 		printf("Regresando al menu usuarios...\n\n\n");
-		return;
+		return cantusuarios;
 	}
 	
 	for(j=i;j<cantusuarios-1;j++)

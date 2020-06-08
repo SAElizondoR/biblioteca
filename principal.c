@@ -14,7 +14,7 @@
 
 int main()
 {
-	int opc,cantusuarios=0,cantlibros=0,cantprestamos=0,cantmultas=0;
+	int sn,opc,cantusuarios=0,cantlibros=0,cantprestamos=0,cantmultas=0;
 	float valormulta;
 	char aux[30];
 	struct usuarios usuarios[100];
@@ -35,6 +35,7 @@ int main()
 	valormulta=lecturavalor(multas,cantmultas);
 	cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
 	impresionmultas(multas,cantmultas,valormulta);
+	impresionusuarios(usuarios,cantusuarios);
 	printf("\n\n\n\n\n\t\t\t\t\t SISTEMA DE LA BIBLIOTECA\n\n\n\n\n\t\t\t\t\t BIENVENIDO\n\n\n\n\n\t\t\t");
 	system("pause");
 	do
@@ -42,10 +43,10 @@ int main()
 		system("cls");
 		printf("\n\n\n\t\t MENU PRINCIPAL:");
 		printf("\n\n\t\t Seleccione un menu");
-		printf("\n\t\t 1) Menu de multas");
-		printf("\n\t\t 2) Menu de prestamos");
-		printf("\n\t\t 3) Menu de libros");
-		printf("\n\t\t 4) Menu de usuarios");
+		printf("\n\t\t 1) Menu de usuarios");
+		printf("\n\t\t 2) Menu de libros");
+		printf("\n\t\t 3) Menu de prestamos");
+		printf("\n\t\t 4) Menu de multas");
 		printf("\n\t\t 5) Salir");
 		printf("\n\n\t\t Escriba el numero de su eleccion: ");
 		do
@@ -64,22 +65,34 @@ int main()
 		switch(opc)
 		{
 			case 1:
-				valormulta=multax(multas,cantmultas,valormulta);
-				cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
+				cantusuarios=usus(usuarios,cantusuarios);
 				break;
 			case 2:
-				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos,multas,cantmultas,valormulta);
-				break;
-			case 3:
 				cantlibros=libs(libros,cantlibros,prestamos,cantprestamos);
 				break;
+			case 3:
+				cantprestamos=prests(libros,usuarios,prestamos,cantlibros,cantusuarios,cantprestamos,multas,cantmultas,valormulta);
+				break;	
 			case 4:
-				cantusuarios=usus(usuarios,cantusuarios);
+				valormulta=multax(multas,cantmultas,valormulta);
+				cantmultas=lecturamultas(multas,cantmultas,prestamos,cantprestamos,usuarios,cantusuarios);
 				break;
 			case 5:
 				break;
 			default:
 				printf("\n Opcion incorrecta");
+		}
+		if(opc==5)
+		{
+			printf("\n Esta seguro de salir? [1.-Si - 2.-No]: ");
+			do
+			{
+				sn=validar();
+				if(sn!=1&&sn!=2)
+					printf("\n\t Introduzca 1 o 2: ");
+			}while(sn!=1&&sn!=2);
+			if(sn==2)
+				opc=1;
 		}
 	}while(opc!=5);
 	return 0;
