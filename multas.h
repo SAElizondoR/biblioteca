@@ -204,6 +204,12 @@ float editar_multa(float valormulta)
 		if(validar_real(aux)==1)
 			printf("\n\n\t Introduzca un valor valido: ");
 	}while(validar_real(aux)==1);
+	if(strlen(aux)>8)
+	{
+		printf("\n\n\t Valor fuera de rango\n\n\t");
+		system("pause");
+		return valormulta;
+	}
 	valormulta=atof(aux);
 	return valormulta;
 }
